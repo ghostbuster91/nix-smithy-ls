@@ -1,5 +1,5 @@
 { pkgs, ... }:
-{ version, outputHash }:
+{ artifact, version, outputHash, homepage }:
 
 pkgs.stdenv.mkDerivation rec {
   pname = "smithy_ls";
@@ -9,7 +9,7 @@ pkgs.stdenv.mkDerivation rec {
     name = "${pname}-deps-${version}";
     buildCommand = ''
       export COURSIER_CACHE=$(pwd)
-      ${pkgs.coursier}/bin/cs fetch com.disneystreaming.smithy:smithy-language-server:${version} > deps
+      ${pkgs.coursier}/bin/cs fetch ${artifact}:${version} > deps
       mkdir -p $out/share/java
       cp -n $(< deps) $out/share/java/
     '';
@@ -32,7 +32,7 @@ pkgs.stdenv.mkDerivation rec {
   '';
 
   meta = with pkgs.lib; {
-    homepage = "https://github.com/disneystreaming/smithy-language-server";
+    inherit homepage;
     license = licenses.asl20;
     description = "Language server for smithy";
     maintainers = [ ];

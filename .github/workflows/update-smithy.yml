@@ -28,7 +28,7 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           token: ${{ secrets.REPO_GITHUB_TOKEN }}
-          base: master
+          base: main
           branch: update/disney-smithy-${{ steps.fetcher.outputs.version }}
           delete-branch: true
           commit-message: "Update Disney Streaming Smithy to ${{ steps.fetcher.outputs.version }}"

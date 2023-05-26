@@ -28,7 +28,8 @@ pkgs.stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
 
-    makeWrapper ${pkgs.jre}/bin/java $out/bin/smithy_ls
+    makeWrapper ${pkgs.jre}/bin/java $out/bin/smithy_ls \
+        --add-flags "${extraJavaOpts} -cp $CLASSPATH software.amazon.smithy.lsp.Main"
   '';
 
   meta = with pkgs.lib; {

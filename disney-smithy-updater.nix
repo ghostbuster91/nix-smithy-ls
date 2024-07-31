@@ -8,12 +8,12 @@ let
 
   src = pkgs.writeShellScript name ''
     NEW=$(${cl} -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/repos/disneystreaming/smithy-language-server/releases/latest | ${jq} -r '.tag_name' | awk '{sub(/^v/, "")} 1')
-    OLD=$(awk -F'"' '/"version"=/{print $4}' ${file})
+    OLD=$(nix eval --json --file disney-lock.nix | jq -r  '.version')
 
     echo "Old version: $OLD"
     echo "New version: $NEW"
 
-    if [ $NEW != $OLD ]; then
+    if [ "$NEW" != "$OLD" ]; then
       echo "Updating smithy"
       sed -i "s/$OLD/$NEW/g" ${file}
 

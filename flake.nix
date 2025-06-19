@@ -19,12 +19,12 @@
         in
         {
           packages = {
-            disney-smithy-ls = smithyBuilder {
+            disneystreaming-smithy-ls = smithyBuilder {
               artifact = "com.disneystreaming.smithy:smithy-language-server";
               inherit (disneyLock) version outputHash;
               homepage = "https://github.com/disneystreaming/smithy-language-server";
             };
-            aws-smithy-ls = smithyBuilder {
+            smithy-lang-smithy-ls = smithyBuilder {
               artifact = "software.amazon.smithy:smithy-language-server";
               inherit (awsLock) version outputHash;
               homepage = "https://github.com/awslabs/smithy-language-server";

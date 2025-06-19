@@ -17,7 +17,7 @@ let
       echo "Updating smithy"
       sed -i "s/$OLD/$NEW/g" ${file}
 
-      nix build .#disney-smithy-ls 2> build-result
+      nix build .#${repository}-smithy-ls 2> build-result
 
       OLD_HASH=$(cat build-result | ${rg} specified: | awk -F ':' '{print $2}' | sed 's/ //g')
       NEW_HASH=$(cat build-result | ${rg} got: | awk -F ':' '{print $2}' | sed 's/ //g')

@@ -1,14 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, repository, ... }:
 let
   cl = "${pkgs.curl}/bin/curl";
   rg = "${pkgs.ripgrep}/bin/rg";
-  file = "disney-lock.nix";
-  name = "disney-smithy-updater-script";
+  file = "${repository}-lock.nix";
+  name = "${repository}-smithy-updater-script";
   jq = "${pkgs.jq}/bin/jq";
 
   src = pkgs.writeShellScript name ''
-    NEW=$(${cl} -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/repos/disneystreaming/smithy-language-server/releases/latest | ${jq} -r '.tag_name' | awk '{sub(/^v/, "")} 1')
-    OLD=$(nix eval --json --file disney-lock.nix | jq -r  '.version')
+    NEW=$(${cl} -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"  https://api.github.com/repos/${repository}/smithy-language-server/releases/latest | ${jq} -r '.tag_name' | awk '{sub(/^v/, "")} 1')
+    OLD=$(nix eval --json --file ${file} | jq -r  '.version')
 
     echo "Old version: $OLD"
     echo "New version: $NEW"

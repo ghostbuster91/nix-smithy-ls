@@ -29,7 +29,8 @@
               inherit (awsLock) version outputHash;
               homepage = "https://github.com/awslabs/smithy-language-server";
             };
-            disney-smithy-updater = import ./disney-smithy-updater.nix { inherit pkgs; };
+            disney-smithy-updater = import ./smithy-updater.nix { inherit pkgs; repository = "disneystreaming"; };
+            aws-smithy-updater = import ./smithy-updater.nix { inherit pkgs; repository = "smithy-lang"; };
           };
         }
       );

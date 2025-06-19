@@ -1,0 +1,39 @@
+name: "Update Smithy"
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+jobs:
+  fetcher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: "Install Nix ❄️"
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            substituters = https://cache.nixos.org/
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+
+      - name: "Fetch latest Smithy"
+        id: fetcher
+        run: nix run .#aws-smithy-updater
+
+      - name: "Create pull request"
+        uses: peter-evans/create-pull-request@v4.2.3
+        with:
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          token: ${{ secrets.REPO_GITHUB_TOKEN }}
+          base: main
+          branch: update/aws-smithy-${{ steps.fetcher.outputs.version }}
+          delete-branch: true
+          commit-message: "Update Disney Streaming Smithy to ${{ steps.fetcher.outputs.version }}"
+          title: "Update Disney Streaming Smithy to ${{ steps.fetcher.outputs.version }}"
+          body: |
+            Update Disney Streaming Smithy to version `${{ steps.fetcher.outputs.version }}`. See https://github.com/smithy-lang/smithy-language-server
+          labels: |
+            aws-smithy-update

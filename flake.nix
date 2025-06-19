@@ -14,8 +14,8 @@
         let
           pkgs = nixpkgs.legacyPackages.${system};
           smithyBuilder = import ./smithy-ls.nix { inherit pkgs; };
-          awsLock = import ./aws-lock.nix;
-          disneyLock = import ./disney-lock.nix;
+          awsLock = import ./smithy-lang-lock.nix;
+          disneyLock = import ./disneystreaming-lock.nix;
         in
         {
           packages = {
